@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 public class ArticlePageObject extends MainPageObject {
 
     private static String TITLE = "org.wikipedia:id/view_page_title_text",
-    FOOTER_ELEMENT = "//*[@text = 'View page in browser']",
     OPTIONS_BUTTON = "//android.widget.ImageView[@content-desc='More options']",
     OPTIONS_ADD_TO_MY_LIST_BUTTON = "//*[@text='Add to reading list']",
     ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
@@ -23,17 +22,24 @@ public class ArticlePageObject extends MainPageObject {
         return waitForElementPresent(By.id(TITLE),"Cannot find article title on page",15);
     }
 
+
+
     public String getArticleTitle(){
         WebElement title_element = waitForTitleElement();
         return title_element.getAttribute("text");
     }
 
-    public void swipeToFooter(){
-        this.swipeUpToFindElement(
-                By.xpath(FOOTER_ELEMENT),
-                "Cannot find element to end article",
-                20);
+    public WebElement fastSearchTitleElement(){
+        return waitForElementPresent(By.id(TITLE),"Cannot find article title on page",0);
     }
+
+
+
+    public String fastGetArticleTitle(){
+        WebElement title_element = fastSearchTitleElement();
+        return title_element.getAttribute("text");
+    }
+
 
     public void addArticleToMyList(String name_of_folder){
         this.waitForElementAndClick(
@@ -75,10 +81,43 @@ public class ArticlePageObject extends MainPageObject {
 
     }
 
+    public void addSecondArticleToMyList (String name_of_folder){
+        this.waitForElementAndClick(
+                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
+                "Can not find menu in second search",
+                5
+        );
+
+        this.waitForElementPresent(
+                By.xpath("//*[@text = 'Add to reading list']"),
+                "Can not find element menu 'add'",
+                5
+        );
+
+        this.waitForElementAndClick(
+                By.xpath("//android.widget.TextView[@text='Add to reading list']"),
+                "Can not find element menu 'add'",
+                5
+        );
+
+        this.waitForElementAndClick(
+                By.xpath("//*[@text='"+name_of_folder+"']"),
+                "Can not add , by click on element'"+ name_of_folder +"'",
+                5);
+
+
+    }
+
     public void closeArticle(){
         this.waitForElementAndClick(
                 By.xpath(CLOSE_ARTICLE_BUTTON),
                 "Can not find close button",
+                5
+        );
+
+        this.waitForElementNotPresent(
+                By.xpath(CLOSE_ARTICLE_BUTTON),
+                "Can not invisible close button in second search appium",
                 5
         );
     }

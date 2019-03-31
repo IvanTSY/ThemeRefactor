@@ -114,24 +114,10 @@ public class MainPageObject {
                 .perform();
     }
 
-    public int getAmountOfElements(By by){
-        List elements = driver.findElements(by);
-        return elements.size();
-    }
 
-    public void assertElementNotPresent(By by, String error_message){
 
-        int amount_of_elements = getAmountOfElements(by);
 
-        if(amount_of_elements > 0){
-            String default_message = "An elements '"+ by.toString() +"'supposed to not be present";
-            throw new AssertionError(default_message + "" + error_message);
-        }
-    }
 
-    public String waitForElementAndGetAttribute(By by, String attribute, String error_message, long timeOutinSeconds){
-        WebElement element = waitForElementPresent(by,error_message,timeOutinSeconds);
-        return element.getAttribute(attribute);
-    }
+
 
 }
